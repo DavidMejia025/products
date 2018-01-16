@@ -6,18 +6,16 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    @categories = Category.all
   end
 
   def create
     @product = Product.new(product_params)
     @product.save
 
-    cat = [
-           "Books",
-           "Toys",
-           "Home"
-
-    ]
+    cat = Category.all.map do |category|
+      category.name
+    end
       
     params.keys.each do |param| 
       if cat.include?(param)
@@ -30,12 +28,8 @@ class ProductsController < ApplicationController
 
 
  def edit
+  @categories = Category.all
    @product = Product.find(params[:id])
-
-
-
-
-
    # product.categories.delete(Category.find_by(name: ""))
  end
 
@@ -43,12 +37,9 @@ class ProductsController < ApplicationController
    @product = Product.find(params[:id])
    @product.update(product_params)
 
-cat = [
-           "Books",
-           "Toys",
-           "Home"
-
-    ]
+    cat = Category.all.map do |category|
+      category.name
+    end
     @product.categories.delete_all
 
     params.keys.each do |param| 
